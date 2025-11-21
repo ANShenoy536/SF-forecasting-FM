@@ -32,7 +32,11 @@ This involes the generation of the spatial distributions or field maps of differ
 ## Training
 We strart with the imagenet-pretrained model (with same or modeified layer one weights based on the input channels). We load the entrie model. We train the last layer with our data for a few epochs and then the entire network. We save and evaluate on the test set at regular intervals (controlled by epochs2). The performance metrics after each evaluation is saved in a csv file, and the corresponding predictions, loss curve, roc-auc curve are stored as well.
 
-```python
+First create the results file by running
+```bash
+```
+
+```bash
 SF_ResNet18_df_3ch.py <sav_nm> <set> <num> <epochs1> "<epochs2>" <learning_rate> <pre_trained_model_path>'
 ```
 - `sav_nm` : The token for the field map as shown in the table
@@ -45,7 +49,11 @@ SF_ResNet18_df_3ch.py <sav_nm> <set> <num> <epochs1> "<epochs2>" <learning_rate>
 
 For 2- and 1-channels run `SF_ResNet18_df_2ch.py` and `SF_ResNet18_df_1ch.py` respectively.
 ## Eval
-After the five-fold cross validation, the best models for each fold, and the final performance metric can be found using the jupyter notebook shown.
+After the five-fold cross validation, the best models for each fold, and the final performance metric can be obtained by running
+```bash
+evaluate_5foldCV_results.py <res_path>
+```
+- `res_path` : string : path to the results file
 ## Inference
 
 ## Links
