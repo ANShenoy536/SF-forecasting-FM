@@ -1,5 +1,9 @@
-''' This program is for training and dev-testing and imagenet-pretrained ResNet18 model. It uses vector magnetogram components as input.
-It gets augmentation and datagenerators from separate python files.'''
+#########################
+# SF_ResNet18_df_3ch.py
+#########################
+# This program is for training and dev-testing and imagenet-pretrained ResNet18 model. It uses vector magnetogram components as input.
+# It gets augmentation and datagenerators from separate python files.'''
+
 
 import torch
 import torch.nn as nn
@@ -30,21 +34,30 @@ if len(sys.argv) == 7:
 else:
     print('Enter the command line input as: \n\t\tSF_ResNet18_df.py set num epochs1 "epochs2" learning_rate pre_trained_model_path')
     sys.exit(0)
-
+	
 device = get_default_device()
 print('Device: ',device)
 
 # Give the path for the image directory
-train_dir = ['/home/nitk233sp001/RawFM_fits/Bp2', '/home/nitk233sp001/RawFM_fits/Br2', '/home/nitk233sp001/RawFM_fits/Bt2'] #edit
+train_dir = ['../data/Bp_preprocessed', '../data/Br_preprocessed', '../data/Bt_preprocessed'] #edit
 test_dir = train_dir
 extensions = ['.Bp.fits', '.Br.fits', '.Bt.fits']
 
 fm = 'Vmgm'
-f = open('/home/nitk233sp001/VectMgm/Outputs/Results'+ fm + '.csv','a')
+out_dir = os.path.join('../Outputs', fm, 'Set' + Set)
+if not os.path.exists(out_dir):
+	print('making Outputs directory...')
+	os.makedirs(out_dir)
+	os.makedirs(os.path.join(out_dir, 'Model'))
+	os.makedirs(os.path.join(out_dir, 'Pred_csv'))
+	os.makedirs(os.path.join(out_dir, 'ROC'))
+	os.makedirs(os.path.join(out_dir, 'LossCurves'))
+	
+				
+f = open(os.path.join(out_dir, 'Results'+ fm + '.csv'),'a')
 
 #Defining the annotation dataframes for training and validation -> 'FileName;Label
-anno_df = pd.read_csv('/home/nitk233sp001/Preprocessing/70_20_10/FiveFoldCV.csv')
-#anno_df_tr = pd.read_csv('/home/nitk233sp001/Preprocessing/Split1_TrainBal.csv', sep = ';')
+anno_df = pd.read_csv('../split_csv/FiveFoldCV.csv')
 anno_df_tr = anno_df[anno_df['Fold'] != Set]
 anno_df_tr = anno_df_tr.reset_index().drop('index',axis = 1)
 anno_df_te = anno_df[anno_df['Fold'] == Set]
@@ -64,9 +77,7 @@ batch_size = 32
 train_loader = DataLoader(traindata, batch_size = batch_size, shuffle = True)
 test_loader = DataLoader(testdata, batch_size = batch_size, shuffle = False)
 
-
 # load the resnet18 model with the pre-trained weights
-#resnet18_3ch_path = '/home/nitk233sp001/VectMgm/Codes/ResNet18_imagenet_3ch.pt'
 resnet18 = torch.load(resnet18_3ch_path, weights_only=False,map_location = device)
 layers = [nn.Linear(in_features=512, out_features=2, bias=True )]
 resnet18.fc = nn.Sequential(*layers)
@@ -144,7 +155,7 @@ for i in range(len(epochs2)):
 
 
 	# Saving the model
-	torch.save(resnet18,"/home/nitk233sp001/VectMgm/Outputs/Set" + str(Set) + "/Model/ResNet18_"+fm + "_" + str(num) + ".pt")
+	torch.save(resnet18, os.path.join(out_dir, "Model/ResNet18_"+fm + "_" + str(num) + ".pt"))
 
 	# Do inference of the testing data
 
@@ -171,7 +182,7 @@ for i in range(len(epochs2)):
 
 	#saving the validation predictions in a csv file
 	df = pd.DataFrame(y_pred_all.numpy(), columns = ['P(NoFlare)', 'P(Flare)'])
-	df.to_csv('/home/nitk233sp001/VectMgm/Outputs/Set' + str(Set) + '/Pred_csv/ResNet18_' + fm + '_pred_' + str(num) + '.csv', header = True, index = False)
+	df.to_csv(os.path.join(out_dir, 'Pred_csv/ResNet18_' + fm + '_pred_' + str(num) + '.csv'), header = True, index = False)
 
 
 	'''
@@ -210,7 +221,7 @@ for i in range(len(epochs2)):
 	plt.xlabel('FPR')
 	plt.ylabel('TPR (Recall)')
 	plt.title('AUC-ROC curve of testing data')
-	plt.savefig('/home/nitk233sp001/VectMgm/Outputs/Set' + str(Set) + '/ROC/ResNet18_' + fm + '_roc_' + str(num) + '.png')
+	plt.savefig(os.path.join(out_dir, 'ROC/ResNet18_' + fm + '_roc_' + str(num) + '.png'))
 
 	if len(hist2):
 		hist_all = hist_all + hist2
@@ -223,7 +234,7 @@ for i in range(len(epochs2)):
 	plt.xlabel('Iterations')
 	plt.ylabel('Loss')
 	plt.legend()
-	plt.savefig('/home/nitk233sp001/VectMgm/Outputs/Set' + str(Set) + '/LossCurves/ResNet18_' + fm + '_loss_' + str(num) + '.png')
+	plt.savefig(os.path.join(out_dir, 'LossCurves/ResNet18_' + fm + '_loss_' + str(num) + '.png'))
 	
 	print('---------------------->num = ', num)
 
