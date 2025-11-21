@@ -17,7 +17,7 @@ Forecasting solar flares using the spatial distributions or field maps of differ
 ## Installation instructions
 Download the repository
 ```bash
-git clone
+git clone https://github.com/ANShenoy536/SF-forecasting-FM.git
 ```
 Create a fresh conda environment using the yml file
 ```bash
