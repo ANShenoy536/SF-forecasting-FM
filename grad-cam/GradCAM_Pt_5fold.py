@@ -233,14 +233,14 @@ else:
    print('Enter the command line input as: \n\t\tGradCAM_Pt_5fold.py sav_nm "models"')
    sys.exit(0)
 
-all_dirs = {'Vmgm': ['/home/nitk233sp001/RawFM_fits/Bp2', '/home/nitk233sp001/RawFM_fits/Br2', '/home/nitk233sp001/RawFM_fits/Bt2'],
-'JFP': ['/home/nitk233sp001/RawFM_fits/Jz2', '/home/nitk233sp001/RawFM_fits/USFLUX2', '/home/nitk233sp001/RawFM_fits/TOTPOT2'],
-'FP': ['/home/nitk233sp001/RawFM_fits/USFLUX2', '/home/nitk233sp001/RawFM_fits/TOTPOT2'],
-'Jz': ['/home/nitk233sp001/RawFM_fits/Jz2'],
-'USJH': ['/home/nitk233sp001/RawFM_fits/USJH2'],
-'LOS': ['/home/nitk233sp001/RawFM_fits/LOS2'],
-'USFLUX': ['/home/nitk233sp001/RawFM_fits/USFLUX2'],
-'TOTPOT': ['/home/nitk233sp001/RawFM_fits/TOTPOT2']}
+all_dirs = {'Vmgm': ['../data/Bp_preprocessed', '../data/Br_preprocessed', '../data/Bt_preprocessed'],
+'JFP': ['../data/Jz_preprocessed', '../data/USFLUX_preprocessed', '../data/TOTPOT_preprocessed'],
+'FP': ['../data/USFLUX_preprocessed', '../data/TOTPOT_preprocessed'],
+'Jz': ['../data/Jz_preprocessed'],
+'USJH': ['../data/USJH_preprocessed'],
+'LOS': ['../data/LOS_preprocessed'],
+'USFLUX': ['../data/USFLUX_preprocessed'],
+'TOTPOT': ['../data/TOTPOT_preprocessed']}
 
 all_exts = {'Vmgm': ['.Bp.fits', '.Br.fits', '.Bt.fits'],
 'JFP': ['.jz.fits', '.usflux.fits', '.TOTPOT.fits'],
@@ -281,11 +281,13 @@ for k in range(len(models)):
     df_test = df[df['Fold'] == Set]
     df_test = df_test.reset_index().drop('index',axis = 1)
     
-    dest = '/home/nitk233sp001/Eval/ReHeatMaps_5fold/'+sav_nm+ '/Set'+str(Set)
-    model_path = '/home/nitk233sp001/BestModels_Redone/Set' + str(Set) + '/ResNet18_' + sav_nm + '_' + str(num) + '.pt' 
+    dest = os.path.join('ReHeatMaps_5fold', sav_nm, 'Set'+str(Set))
+    if not os.path.exists(dest):
+        os.makedirs(dest)
+    model_path = os.path.join('../Outputs', sav_nm, 'Set' + str(Set), "Model/ResNet18_"+sav_nm + "_" + str(num) + ".pt")
+                              
     resnet = ResNet(model_path, device)
     resnet.eval()
-
 #print('Checkpoint 3: Model loaded and put in eval mode')
     print(f'=============== Testing Fold {Set} for Set {Set} ==============')
     for i in range(len(df_test)):
