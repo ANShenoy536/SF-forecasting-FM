@@ -37,9 +37,9 @@ First create the results file by running
 ```
 
 ```bash
-SF_ResNet18_df_3ch.py <sav_nm> <set> <num> <epochs1> "<epochs2>" <learning_rate> <pre_trained_model_path>'
+python SF_ResNet18_df_3ch.py <sav_nm> <set> <num> <epochs1> "<epochs2>" <learning_rate> <pre_trained_model_path>'
 ```
-- `sav_nm` : The token for the field map as shown in the table
+- `sav_nm` : string : is the token for the field map as shown in the table
 - `set` : int : is the five fold cross-validation set
 - `num` : int : is the model number you want to assign
 - `epochs1`: int: is number of epochs to train the last layer with all the other layers frozen
@@ -51,9 +51,9 @@ For 2- and 1-channels run `SF_ResNet18_df_2ch.py` and `SF_ResNet18_df_1ch.py` re
 ## Eval
 After the five-fold cross validation, the best models for each fold, and the final performance metric can be obtained by running
 ```bash
-evaluate_5foldCV_results.py <res_path>
+python evaluate_5foldCV_results.py <res_path>
 ```
-- `res_path` : string : path to the results file
+- `res_path` : string : is the path to the results file generated after training
 ## Inference
 
 ## Links
