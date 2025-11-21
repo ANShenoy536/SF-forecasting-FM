@@ -1,6 +1,18 @@
 # SF-forecasting-FM 
 Forecasting solar flares using the spatial distributions or field maps of different properties.  
 ##### Summary
+|sav_nm|Model name|Inputs|
+| --- | --- | --- |
+| Vmgm | VectMgm | Bp, Br, Bt magnetograms |
+| JFP | JzFluxPot | vertical current, unsigned magnetic flux, photospheric magnetic free energy density|
+| FP | FluxPot | unsigned magnetic flux, photospheric magnetic free energy density|
+| LOS | LOS | line-of-sight magnetic field |
+| Jz | Jz | vertical current | 
+| USJH | USJH | unsigned current helicity |
+| USFLUX | USFLUX | unsigned magnetic flux | 
+| TOTPOT | TOTPOT | photospheric magnetic free energy density |
+
+
 ##### Diagram of model pipeline
 ##### Installation instructions
 ##### Training
@@ -8,8 +20,9 @@ We strart with the imagenet-pretrained model (with same or modeified layer one w
 
 In order to change 
 ```python
-SF_ResNet18_df.py <set> <num> <epochs1> <"epochs2"> <learning_rate> <pre_trained_model_path>'
+SF_ResNet18_df_*ch.py <sav_nm> <set> <num> <epochs1> <"epochs2"> <learning_rate> <pre_trained_model_path>'
 ```
+- `sav_nm` : The token for the field map as shown in the table
 - `set` : int : is the five fold cross-validation set
 - `num` : int : is the model number you want to assign
 - `epochs1`: int: is number of epochs to train the last layer with all the other layers frozen
