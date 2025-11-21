@@ -27,7 +27,7 @@ conda env create -f CondaEnvironment.yml
 We strart with the imagenet-pretrained model (with same or modeified layer one weights based on the input channels). We load the entrie model. We train the last layer with our data for a few epochs and then the entire network. We save and evaluate on the test set at regular intervals (controlled by epochs2). The performance metrics after each evaluation is saved in a csv file, and the corresponding predictions, loss curve, roc-auc curve are stored as well.
 
 ```python
-SF_ResNet18_df_3ch.py <sav_nm> <set> <num> <epochs1> <"epochs2"> <learning_rate> <pre_trained_model_path>'
+SF_ResNet18_df_3ch.py <sav_nm> <set> <num> <epochs1> "<epochs2>" <learning_rate> <pre_trained_model_path>'
 ```
 - `sav_nm` : The token for the field map as shown in the table
 - `set` : int : is the five fold cross-validation set
