@@ -24,26 +24,31 @@ from sklearn.metrics import confusion_matrix, roc_curve, roc_auc_score
 import matplotlib.pyplot as plt
 import sys
 
-if len(sys.argv) == 7:
-    Set = int(sys.argv[1])
-    num = int(sys.argv[2])
-    epochs1 = int(sys.argv[3])
-    epochs2 = list(map(int, sys.argv[4].strip('[]').split(',')))
-    learning_rate = float(sys.argv[5])
-    resnet18_3ch_path = sys.argv[6]
+
+dir_paths = {'Vmgm': ['../data/Bp_preprocessed', '../data/Br_preprocessed', '../data/Bt_preprocessed'],
+			 'JFP': ['../data/Jz_preprocessed', '../data/USFLUX_preprocessed', '../data/TOTPOT_preprocessed']}
+all_extensions = {'Vmgm': ['.Bp.fits', '.Br.fits', '.Bt.fits'], 'JFP': ['.jz.fits', '.usflux.fits', '.TOTPOT.fits']}
+
+if len(sys.argv) == 8:
+	fm = ing(sys.argv[1])
+    Set = int(sys.argv[2])
+    num = int(sys.argv[3])
+    epochs1 = int(sys.argv[4])
+    epochs2 = list(map(int, sys.argv[5].strip('[]').split(',')))
+    learning_rate = float(sys.argv[6])
+    resnet18_3ch_path = sys.argv[7]
 else:
-    print('Enter the command line input as: \n\t\tSF_ResNet18_df.py set num epochs1 "epochs2" learning_rate pre_trained_model_path')
+    print('Enter the command line input as: \n\t\tSF_ResNet18_df_3ch.py fm set num epochs1 "epochs2" learning_rate pre_trained_model_path')
     sys.exit(0)
 	
 device = get_default_device()
 print('Device: ',device)
 
 # Give the path for the image directory
-train_dir = ['../data/Bp_preprocessed', '../data/Br_preprocessed', '../data/Bt_preprocessed'] #edit
+train_dir = dir_paths[fm]
 test_dir = train_dir
-extensions = ['.Bp.fits', '.Br.fits', '.Bt.fits']
+extensions = all_extensions[fm] 
 
-fm = 'Vmgm'
 out_dir = os.path.join('../Outputs', fm, 'Set' + Set)
 if not os.path.exists(out_dir):
 	print('making Outputs directory...')
