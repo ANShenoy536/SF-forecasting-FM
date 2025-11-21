@@ -1,6 +1,6 @@
 # SF-forecasting-FM 
 Forecasting solar flares using the spatial distributions or field maps of different properties.  
-##### Summary
+## Summary
 |sav_nm|Model name|Inputs|
 | --- | --- | --- |
 | Vmgm | VectMgm | Bp, Br, Bt magnetograms |
@@ -13,9 +13,17 @@ Forecasting solar flares using the spatial distributions or field maps of differ
 | TOTPOT | TOTPOT | photospheric magnetic free energy density |
 
 
-##### Diagram of model pipeline
-##### Installation instructions
-##### Training
+## Diagram of model pipeline
+## Installation instructions
+Download the repository
+```bash
+git clone
+```
+Create a fresh conda environment using the yml file
+```bash
+conda env create -f CondaEnvironment.yml
+```
+## Training
 We strart with the imagenet-pretrained model (with same or modeified layer one weights based on the input channels). We load the entrie model. We train the last layer with our data for a few epochs and then the entire network. We save and evaluate on the test set at regular intervals (controlled by epochs2). The performance metrics after each evaluation is saved in a csv file, and the corresponding predictions, loss curve, roc-auc curve are stored as well.
 
 In order to change 
@@ -30,9 +38,9 @@ SF_ResNet18_df_*ch.py <sav_nm> <set> <num> <epochs1> <"epochs2"> <learning_rate>
 - `learning_rate`: float : is the learning rate
 - `pre_trained_model_path` : string : is the path to the pre-trained imagenet ResNet18 model.
 
-##### Testing
-##### Citations
-##### Links
+## Testing
+## Citations
+## Links
 
 
 
