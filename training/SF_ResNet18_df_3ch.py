@@ -1,4 +1,6 @@
-''' This program is for training and dev-testing and imagenet-pretrained ResNet18 model. It uses vector magnetogram components as input. It gets augmentation and datagenerators from separate python files.'''
+''' This program is for training and dev-testing and imagenet-pretrained ResNet18 model. It uses vector magnetogram components as input.
+It gets augmentation and datagenerators from separate python files.'''
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -18,19 +20,16 @@ from sklearn.metrics import confusion_matrix, roc_curve, roc_auc_score
 import matplotlib.pyplot as plt
 import sys
 
-if len(sys.argv) == 6:
-    #Set = int(sys.argv[1])
-    num = int(sys.argv[1])
-    epochs1 = int(sys.argv[2])
-    epochs2 = list(map(int, sys.argv[3].strip('[]').split(',')))
-    learning_rate = float(sys.argv[4])
-    resnet18_3ch_path = sys.argv[5]
+if len(sys.argv) == 7:
+    Set = int(sys.argv[1])
+    num = int(sys.argv[2])
+    epochs1 = int(sys.argv[3])
+    epochs2 = list(map(int, sys.argv[4].strip('[]').split(',')))
+    learning_rate = float(sys.argv[5])
+    resnet18_3ch_path = sys.argv[6]
 else:
-    print('Enter the command line input as: \n\t\tSF_ResNet18_df_zip.py num epochs1 "epochs2" learning_rate pre_trained_model_path')
+    print('Enter the command line input as: \n\t\tSF_ResNet18_df.py set num epochs1 "epochs2" learning_rate pre_trained_model_path')
     sys.exit(0)
-
-
-f = open('/home/nitk233sp001/VectMgm/Outputs/ResultsLOS.csv','a')
 
 device = get_default_device()
 print('Device: ',device)
@@ -41,7 +40,7 @@ test_dir = train_dir
 extensions = ['.Bp.fits', '.Br.fits', '.Bt.fits']
 
 fm = 'Vmgm'
-Set = 1
+f = open('/home/nitk233sp001/VectMgm/Outputs/Results'+ fm + '.csv','a')
 
 #Defining the annotation dataframes for training and validation -> 'FileName;Label
 anno_df = pd.read_csv('/home/nitk233sp001/Preprocessing/70_20_10/FiveFoldCV.csv')
@@ -50,17 +49,6 @@ anno_df_tr = anno_df[anno_df['Fold'] != Set]
 anno_df_tr = anno_df_tr.reset_index().drop('index',axis = 1)
 anno_df_te = anno_df[anno_df['Fold'] == Set]
 anno_df_te = anno_df_te.reset_index().drop('index',axis = 1)
-
-'''
-print(anno_df_tr)
-print('\n\n\n\n')
-print(anno_df_te)
-print('\n\n\n\n')
-print(len(anno_df_tr) + len(anno_df_te))
-print('\n\n')
-print('Tr unique: ',np.unique(anno_df_tr['Fold'].values))
-print('Te unique: ',np.unique(anno_df_te['Fold'].values))
-'''
 
 # Define input size and which transforms to use
 img_size = 224
@@ -120,21 +108,13 @@ for params in resnet18.parameters():
 '''
 
 # Defining hyperparameters for training
-"""
-num = 6
-epochs1 = 10
-epochs2 = [20,20,20,20,20]
-learning_rate = 1e-7
-"""
 hist_all = []
-
-# Class weights
+# Class weights for the five folds
 all_class_weights = {1: torch.FloatTensor([0.0323,0.9677]), 2: torch.FloatTensor([0.0307,0.9693]), 3: torch.FloatTensor([0.0430,0.9570]), 4: torch.FloatTensor([0.0602,0.9398]), 5: torch.FloatTensor([0.0478,0.9522])}
-
 class_weights = all_class_weights[Set]
+
 # Defining the loss function
 criterion = nn.CrossEntropyLoss(weight = class_weights)
-#criterion = nn.CrossEntropyLoss() #For without class weights, or the balanced case
 
 to_device(class_weights, device)
 to_device(criterion, device)
