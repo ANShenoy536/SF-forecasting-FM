@@ -1,9 +1,8 @@
 #########################
 # SF_ResNet18_df_3ch.py
 #########################
-# This program is for training and dev-testing and imagenet-pretrained ResNet18 model. It uses vector magnetogram components as input.
-# It gets augmentation and datagenerators from separate python files.'''
-
+# This program is for training and dev-testing and imagenet-pretrained ResNet18 model. 
+# It gets augmentation specifications and datagenerators from separate python files.'''
 
 import torch
 import torch.nn as nn
