@@ -62,12 +62,19 @@ from skimage import exposure
 from datetime import datetime, timedelta
 import json
 import csv
+import sys
 
 import warnings
 warnings.simplefilter('ignore')
 
 
-base_dir = r"D:\PGStuff\SolarFlare\SolarData\2D_2020_onwards\Downloads"#"D:\PGStuff\SolarFlare\SolarData\9fieldmaps"
+
+if len(sys.argv) == 3:
+	base_dir = sys.argv[1]
+	dest_dir = sys.argv[2]
+else:
+	print('Enter the command line input as: \n\t\tFieldMapGenertor.py base_dir dest_dir')
+	sys.exit(0)
 
 
 radsindeg = np.pi/180.
@@ -87,16 +94,16 @@ def update_skipFile(file,miss_par): # accounts for skipped file
 
 # os.remove('skip_files.txt') #For fresh start, clears the previous file
 
-jz_dest = r"D:\PGStuff\SolarFlare\SolarData\2D_2020_onwards\New folder\Jz"
-jz_dest_err = r"D:\PGStuff\SolarFlare\SolarData\2D_2020_onwards\New folder\Jz_err"
+jz_dest = os.path.join(dest_dir, "Jz")
+jz_dest_err = os.path.join(dest_dir, "Jz_err")
 
-jh_dest = r"D:\PGStuff\SolarFlare\SolarData\2D_2020_onwards\New folder\USJH"
-jh_dest_err = r"D:\PGStuff\SolarFlare\SolarData\2D_2020_onwards\New folder\USJH_err"
+jh_dest = os.path.join(dest_dir, "USJH")
+jh_dest_err = os.path.join(dest_dir, "USJH_err")
 
-totpot_dest = r"D:\PGStuff\SolarFlare\SolarData\2D_2020_onwards\New folder\TOTPOT"
-totpot_dest_err = r"D:\PGStuff\SolarFlare\SolarData\2D_2020_onwards\New folder\TOTPOT_err"
+totpot_dest = os.path.join(dest_dir, "TOTPOT")
+totpot_dest_err = os.path.join(dest_dir, "TOTPOT_err")
 
-json_path_dest = r"D:\PGStuff\SolarFlare\SolarData\2D_2020_onwards\New folder\JSON_Files"
+json_path_dest = os.path.join(dest_dir, "JSON_Files")
 
 for noaa in noaas:
 	loop_idx+=1
