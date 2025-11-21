@@ -27,7 +27,7 @@
 
 
 ###############################################
-Generating the field maps of physical features
+# Generating the field maps of physical features
 ###############################################
 # This file generates the field maps or spatial distributions of the vertical current (Jz), unsigned current helicity (USFLUX) and the photospheric magnetic free energy density (TOTPOT). It also generates their error files. 
 # 
