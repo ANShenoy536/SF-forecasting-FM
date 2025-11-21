@@ -49,7 +49,7 @@ train_dir = ['../data/USFLUX_preprocessed', '../data/TOTPOT_preprocessed']
 test_dir = train_dir
 extensions = ['.usflux.fits', '.TOTPOT.fits']
 
-out_dir = os.path.join('../Outputs', sav_nm, 'Set' + Set)
+out_dir = os.path.join('../Outputs', sav_nm, 'Set' + str(Set))
 if not os.path.exists(out_dir):
 	print('making Outputs directory...')
 	os.makedirs(out_dir)
