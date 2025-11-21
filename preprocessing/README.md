@@ -27,6 +27,7 @@ This file generates the FM for the unsigned magnetic flux from the pre-processed
 \
 Thus, the generated FMs need not be pre-processed again.
 ```python
-python Gen_USFLUX_FM.py <src_dir path>`
+python Gen_USFLUX_FM.py <ffcsv path> <src_dir path>`
 ```
 - src_dir is the directory containing the pre-processed Bp, Br and Bt FMs. It is also where the pre-processed USFLUX directory will be created.
+- ffcsv is the FiveFoldCV.csv file.
