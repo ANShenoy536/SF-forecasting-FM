@@ -30,7 +30,7 @@ dir_paths = {'Vmgm': ['../data/Bp_preprocessed', '../data/Br_preprocessed', '../
 all_extensions = {'Vmgm': ['.Bp.fits', '.Br.fits', '.Bt.fits'], 'JFP': ['.jz.fits', '.usflux.fits', '.TOTPOT.fits']}
 
 if len(sys.argv) == 8:
-	fm = ing(sys.argv[1])
+	sav_nm = ing(sys.argv[1])
     Set = int(sys.argv[2])
     num = int(sys.argv[3])
     epochs1 = int(sys.argv[4])
@@ -38,18 +38,18 @@ if len(sys.argv) == 8:
     learning_rate = float(sys.argv[6])
     resnet18_3ch_path = sys.argv[7]
 else:
-    print('Enter the command line input as: \n\t\tSF_ResNet18_df_3ch.py fm set num epochs1 "epochs2" learning_rate pre_trained_model_path')
+    print('Enter the command line input as: \n\t\tSF_ResNet18_df_3ch.py sav_nm set num epochs1 "epochs2" learning_rate pre_trained_model_path')
     sys.exit(0)
 	
 device = get_default_device()
 print('Device: ',device)
 
 # Give the path for the image directory
-train_dir = dir_paths[fm]
+train_dir = dir_paths[sav_nm]
 test_dir = train_dir
-extensions = all_extensions[fm] 
+extensions = all_extensions[sav_nm] 
 
-out_dir = os.path.join('../Outputs', fm, 'Set' + Set)
+out_dir = os.path.join('../Outputs', sav_nm, 'Set' + Set)
 if not os.path.exists(out_dir):
 	print('making Outputs directory...')
 	os.makedirs(out_dir)
@@ -59,7 +59,7 @@ if not os.path.exists(out_dir):
 	os.makedirs(os.path.join(out_dir, 'LossCurves'))
 	
 				
-f = open(os.path.join(out_dir, 'Results'+ fm + '.csv'),'a')
+f = open(os.path.join(out_dir, 'Results'+ sav_nm + '.csv'),'a')
 
 #Defining the annotation dataframes for training and validation -> 'FileName;Label
 anno_df = pd.read_csv('../split_csv/FiveFoldCV.csv')
@@ -160,7 +160,7 @@ for i in range(len(epochs2)):
 
 
 	# Saving the model
-	torch.save(resnet18, os.path.join(out_dir, "Model/ResNet18_"+fm + "_" + str(num) + ".pt"))
+	torch.save(resnet18, os.path.join(out_dir, "Model/ResNet18_"+sav_nm + "_" + str(num) + ".pt"))
 
 	# Do inference of the testing data
 
@@ -187,7 +187,7 @@ for i in range(len(epochs2)):
 
 	#saving the validation predictions in a csv file
 	df = pd.DataFrame(y_pred_all.numpy(), columns = ['P(NoFlare)', 'P(Flare)'])
-	df.to_csv(os.path.join(out_dir, 'Pred_csv/ResNet18_' + fm + '_pred_' + str(num) + '.csv'), header = True, index = False)
+	df.to_csv(os.path.join(out_dir, 'Pred_csv/ResNet18_' + sav_nm + '_pred_' + str(num) + '.csv'), header = True, index = False)
 
 
 	'''
@@ -226,7 +226,7 @@ for i in range(len(epochs2)):
 	plt.xlabel('FPR')
 	plt.ylabel('TPR (Recall)')
 	plt.title('AUC-ROC curve of testing data')
-	plt.savefig(os.path.join(out_dir, 'ROC/ResNet18_' + fm + '_roc_' + str(num) + '.png'))
+	plt.savefig(os.path.join(out_dir, 'ROC/ResNet18_' + sav_nm + '_roc_' + str(num) + '.png'))
 
 	if len(hist2):
 		hist_all = hist_all + hist2
@@ -239,11 +239,11 @@ for i in range(len(epochs2)):
 	plt.xlabel('Iterations')
 	plt.ylabel('Loss')
 	plt.legend()
-	plt.savefig(os.path.join(out_dir, 'LossCurves/ResNet18_' + fm + '_loss_' + str(num) + '.png'))
+	plt.savefig(os.path.join(out_dir, 'LossCurves/ResNet18_' + sav_nm + '_loss_' + str(num) + '.png'))
 	
 	print('---------------------->num = ', num)
 
-	f.write(str(Set) + ',' + str(num) + ',' + fm + ',' + str(learning_rate) + ',' + str(cm[1,1]) + ',' + str(cm[0,0]) + ',' + str(cm[0,1]) + ',' + str(cm[1,0]) + ',' + str(acc_c) + ',' + str(auc) + ',' + str(prec_c) + ',' + str(rec_c) + ',' + str(f1_c) + ',' + str(tss) + '\n')
+	f.write(str(Set) + ',' + str(num) + ',' + sav_nm + ',' + str(learning_rate) + ',' + str(cm[1,1]) + ',' + str(cm[0,0]) + ',' + str(cm[0,1]) + ',' + str(cm[1,0]) + ',' + str(acc_c) + ',' + str(auc) + ',' + str(prec_c) + ',' + str(rec_c) + ',' + str(f1_c) + ',' + str(tss) + '\n')
         
 	num = num + 1
 f.close()
