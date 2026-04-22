@@ -1,14 +1,14 @@
 """
 This code carries out Pad-crop and normalization while also calculating and updating the coordinates of the pre-processed file in its FITS header.
+NOTE:  this file requires the creation of the Bitmap_centroids.csv file using Get_Bitmap_Centroids.py.
+NOTATION: axis = 0 => the change will be to the rows or relating to the y-axis
+            axis = 1 => the change will be to the columns or relating to x-axis
+
 """
 from astropy.io import fits
-# import astropy
+
 import sunpy
 import sunpy.map
-
-#from astropy.coordinates import SkyCoord
-#import astropy.units as u
-#import sunpy.coordinates
 
 import os
 import numpy as np
@@ -75,7 +75,7 @@ def normalize(img, max_val, min_val):
 
 
 
-def log_normalize(img, max_val, min_val):
+def log_normalize(img, max_val, min_val): # For TOTPOT
     n_img = np.zeros(img.shape)
     p_img = np.zeros(img.shape)
     
@@ -177,47 +177,32 @@ def save_img_fits(img, dest_dir, fl_name, header, case, cent_cord_x = None, cent
     hdul.writeto(os.path.join(dest_dir, fl_name), overwrite = True)
 
 
-# In[5]:
+######################################
+# Loading the paths to the directories and the Bitmaps_centroid.csv file
+######################################
 
+# FM-wise file extensions
+all_exts = {'Bp': '.Bp.fits', 'Br': '.Br.fits', 'Bt': '.Bt.fits', 'Jz': '.jz.fits', 'USJH': '.USJH.fits',
+            'LOS': '.magnetogram.fits', 'USFLUX': '.usflux.fits', 'TOTPOT': '.TOTPOT.fits'}
+            
+# FM-wise T_H (maxvals) and T_L values (minvals)
+minvals = {'Bp': 100, 'Br': 100, 'Bt': 100, 'LOS': 100, 'Jz': 0, 'USJH': 0, 'TOTPOT': 1e17 }
+maxvals = {'Bp': 2000, 'Br': 2000, 'Bt': 2000, 'LOS': 2000, 'Jz': 150, 'USJH': 0.5, 'TOTPOT': 1e20 }
 
 csv_fl = "/home/spml_test/ash/helpers/Centroids.csv"
 df = pd.read_csv(csv_fl, sep = ';')
 
-
-def res(img = None, size = (224,224)):
-    y,x = (896,896)#img.shape
-    rx = x//size[1]
-    ry = y//size[0]
-    ar = np.zeros(size)
-    ker = np.ones((ry,rx))*1/(rx*ry)
-
-    
-    m=n=0
-    for i in range(0, y, ry):
-        n=0
-        for j in range(0, x, rx):
-#            if np.sum(img[i:i+ry, j:j+rx] * ker) != 0.0:
-#                print('img: ', ar[m,n])
-#                print('dot: ', np.sum(img[i:i+ry, j:j+rx] * ker))
-            ar[m,n] = np.sum(img[i:i+ry, j:j+rx] * ker)
-            n+=1
-        m+=1
-    return ar
-
-
-# In[ ]:
-
-
-dir_path = "/home/spml_test/ash/data/Bt" #directory containing the file to crop
-extension = ".Bt.fits" #extension of the file
-
-dest_dir = "/home/spml_test/ash/pre_processed/Bt_coord" #directory where the cropped images will be saved
-
 cx = df['Cx']
 cy = df['Cy']
 
-max_val = 2000
-min_val = 100
+fm_nm = 'TOTPOT'
+dir_path = os.path.join("./data", fm_nm) #directory containing the file to crop
+extension = all_exts[fm_nm] #extension of the file
+
+dest_dir = os.path.join("./data", fm_nm + '_preprocessed') #directory where the cropped images will be saved
+
+max_val = maxvals[fm_nm]
+min_val = minvals[fm_nm]
 
 size = (224, 224)
 count = 0
@@ -272,7 +257,10 @@ for i in tqdm(range(len(df))):
         print('Case 5: ', img.shape)
         count += 1
     
-    norm_img = normalize(fin_img, max_val, min_val)
+    if fm_nm == 'TOTPOT':
+        norm_img = log_normalize(fin_img, max_val, min_val)
+    else:
+        norm_img = normalize(fin_img, max_val, min_val)
     
     resized_img = cv2.resize(norm_img, size, interpolation = cv2.INTER_LINEAR)
     save_img_fits(resized_img, dest_dir, df['FileName'][i]+extension, header, case, cent_cord_x, cent_cord_y)
