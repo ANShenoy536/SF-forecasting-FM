@@ -1,6 +1,7 @@
 # Data Download
 The SHARP segments corresponding to the dataset by Hollanda et al. (2021) has been compiled in the `split_csv/FiveFoldCV.csv`, with the HARPNUMs (or HARP numbers) of sampled obtained by mapping them with NOAA AR numbers. 
 To Download the data run the following script:
+**NOTE: ** In order to request the data from JSOC you need to register your email with them at [http://jsoc.stanford.edu/ajax/register_email.html][here]
 ```python
 python3 DataDownload/RawDataDownload.py
 ```
