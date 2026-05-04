@@ -9,10 +9,10 @@ The above script will generate folders in the format <HARPNUM>__<T_REC> in the `
 cd data
 mkdir Bp Br Bt LOS Bitmap
 for i in raw_data/*; do
-mv "${i}/*.bitmap.fits" Bitmap/
-mv "${i}/*.magnetogram.fits" LOS/
-mv "${i}/*.Bp.fits" Bp/
-mv "${i}/*.Br.fits" Br/
-mv "${i}/*.Bt.fits" Bt/
+mv ${i}/*.bitmap.fits Bitmap/
+mv ${i}/*.magnetogram.fits LOS/
+mv ${i}/*.Bp.fits Bp/
+mv ${i}/*.Br.fits Br/
+mv ${i}/*.Bt.fits Bt/
 done
 ```
