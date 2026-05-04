@@ -14,4 +14,5 @@ mv "${i}/*.magnetogram.fits" LOS/
 mv "${i}/*.Bp.fits" Bp/
 mv "${i}/*.Br.fits" Br/
 mv "${i}/*.Bt.fits" Bt/
+done
 ```
