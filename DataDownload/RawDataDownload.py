@@ -13,7 +13,7 @@ from sunpy.net import attrs as a
 import pandas as pd
 from tqdm import tqdm
 
-save_dir = "./data"
+save_dir = "./data/raw_data"
 email_id = '<YOUR_EMAIL>' # This email needs to be registered with JSOC (ref http://jsoc.stanford.edu/ajax/register_email.html)
 
 client = drms.Client()
