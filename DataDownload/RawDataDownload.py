@@ -18,7 +18,7 @@ email_id = '<YOUR_EMAIL>' # This email needs to be registered with JSOC (ref htt
 
 client = drms.Client()
 
-df= pd.read_csv("./FiveFoldCV.csv")
+df= pd.read_csv("./split_csv/FiveFoldCV.csv")
 
 start = 0
 end = len(df)
