@@ -36,7 +36,7 @@ for i in tqdm(range(start,end), total = end-start):
     result = Fido.search(a.Time(T, T),
                      a.jsoc.Series('hmi.sharp_cea_720s'),
                      a.jsoc.PrimeKey("HARPNUM", harp),
-                     a.jsoc.Segment('magnetogram') & a.jsoc.Segment('Bp') & a.jsoc.Segment('Br') & a.jsoc.Segment('Bt') & a.jsoc.Segment('bitmap') & a.jsoc.Segment('conf_disambig'),
+                     a.jsoc.Segment('magnetogram') & a.jsoc.Segment('Bp') & a.jsoc.Segment('Br') & a.jsoc.Segment('Bt') & a.jsoc.Segment('bitmap'),
                      a.jsoc.Notify(email_id))
     dwld_fl= Fido.fetch(result,path=save_loc,overwrite=False)
 
