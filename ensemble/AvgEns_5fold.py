@@ -11,23 +11,12 @@ labels = df_flare['Label'].values
 
 print('\nJz, USFLUX, LOS, USJH, TOTPOT\n')
 
-#print(df_flare)
-print((df_flare['Label'].values == df_noflare['Label'].values).all())
-
 avg_in_flare = df_flare[['Jz', 'USFLUX', 'LOS','USJH','TOTPOT']].mean(axis = 1)
 avg_in_noflare = df_noflare[['Jz', 'USFLUX', 'LOS','USJH','TOTPOT']].mean(axis = 1)
 
-#print(avg_in_flare)
-#print(avg_in_noflare)
-
 avg_in = pd.concat([avg_in_noflare, avg_in_flare], axis = 1)
-#print(avg_in)
-
 avg_in = torch.nn.Softmax(dim = 1)(torch.tensor(avg_in.to_numpy()))
-#print(avg_in)
-
 avg_in_lab = np.argmax(avg_in.numpy(), axis = 1)
-#avg_in_lab = np.where(avg_in > 0.5, 1, 0)
 
 cm = confusion_matrix(labels, avg_in_lab)
 auc = roc_auc_score(labels, avg_in.numpy()[:,1])
