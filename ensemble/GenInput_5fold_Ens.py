@@ -1,5 +1,9 @@
 """
-This script generates predeictions i.e. logit(Flare) for the entire dataset using the best models from each set, for all 5 individual FMs. For every set, it stores the logits from the best model for each of the 5 FMs. Therefore, the output is 5 csv files, one for each set, with header being the different FMs.
+This script generates predeictions i.e. logit(Flare) for the entire dataset using the best models from each set, 
+for all 5 individual FMs. For every set, it stores the logits from the best model for each of the 5 FMs. Therefore, 
+the output is 5 csv files, one for each set, with header being the different FMs.
+
+Please Note that while the output csvs say P(Flare)/P(NoFlare) they actually mean logit(Flare)/logit(NoFlare).
 """
 
 import pandas as pd
