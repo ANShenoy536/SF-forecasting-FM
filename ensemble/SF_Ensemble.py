@@ -1,3 +1,8 @@
+""" 
+This script does ensemble learning using a Meta-learner. 
+NOTE: it requires running the GenInput_5fold_Ens.py first.
+"""
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -31,7 +36,7 @@ print('Device: ', device)
 
 print(f'================== Set {Set} =====================')
 
-anno_df = pd.read_csv('/home/nitk233sp001/Ensemble/csv_inps/Set' + str(Set) + '_1chPredEnsemble.csv')
+anno_df = pd.read_csv('csv_inps/Set' + str(Set) + '_1chPredEnsemble.csv')
 anno_df_tr = anno_df[anno_df['Fold'] != Set]
 anno_df_tr = anno_df_tr.reset_index().drop('index',axis = 1)
 anno_df_te = anno_df[anno_df['Fold'] == Set]
@@ -40,7 +45,7 @@ anno_df_te = anno_df_te.reset_index().drop('index',axis = 1)
 img_size = 224
 batch_size = 32
 transform_noAug = None
-transform_Aug = None #Train_aug2()
+transform_Aug = None 
 
 # --- DataLoaders ---
 en_tr = CustDatGen_Ensemble(5, anno_df_tr, transform = transform_Aug, target_transform = None, rescale = False)
@@ -69,10 +74,10 @@ to_device(model, device)
 print(model)
 
 # --- Defining hyperparameters for training ---
-save_dest = '/home/nitk233sp001/Ensemble/Outputs/Model/ResNet18_Ens' + str(Set) + '_' + str(num) + '.pt'
-pred_dest = '/home/nitk233sp001/Ensemble/Outputs/Pred_csv/ResNet18_Ens' + str(Set) + '_pred_' + str(num) + '.csv'
-roc_dest = '/home/nitk233sp001/Ensemble/Outputs/ROC/ResNet18_Ens' + str(Set) + '_roc_' + str(num) + '.png'
-loss_dest = '/home/nitk233sp001/Ensemble/Outputs/FiveFoldCV/LossCurves/ResNet18_Ens' + str(Set) + '_loss_' + str(num) + '.png'
+save_dest = 'Outputs/Model/ResNet18_Ens' + str(Set) + '_' + str(num) + '.pt'
+pred_dest = 'Outputs/Pred_csv/ResNet18_Ens' + str(Set) + '_pred_' + str(num) + '.csv'
+roc_dest = 'Outputs/ROC/ResNet18_Ens' + str(Set) + '_roc_' + str(num) + '.png'
+loss_dest = 'Outputs/FiveFoldCV/LossCurves/ResNet18_Ens' + str(Set) + '_loss_' + str(num) + '.png'
 
 hist_all = []
 
