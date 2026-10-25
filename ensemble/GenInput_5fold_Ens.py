@@ -18,14 +18,17 @@ device = get_default_device()
 print('Device: ',device)
 
 
-df_lab = pd.read_csv('/home/nitk233sp001/Preprocessing/70_20_10/FiveFoldCV.csv')
+df_lab = pd.read_csv('../split_csv/FiveFoldCV.csv')
 
-all_models = {'Jz': [17,7,18,13,2], 'USFLUX': [10,7,4,8,10], 'LOS': [1,7,13,15,2], 'USJH': [14,8,7,7,2], 'TOTPOT': [9,11,11,13,13]}
-test_dir_list = {'Jz': ['/home/nitk233sp001/RawFM_fits/Jz2'], 
-                 'USFLUX': ['/home/nitk233sp001/RawFM_fits/USFLUX2'], 
-                 'LOS': ['/home/nitk233sp001/RawFM_fits/LOS2'], 
-                 'USJH': ['/home/nitk233sp001/RawFM_fits/USJH2'],
-                 'TOTPOT': ['/home/nitk233sp001/RawFM_fits/TOTPOT2']}
+all_models = {'sav_nm': list of model_num for fold-wise best model}
+# Eg. {'Jz': [17,7,18,13,2], 'USFLUX': [10,7,4,8,10], 'LOS': [1,7,13,15,2], 'USJH': [14,8,7,7,2], 'TOTPOT': [9,11,11,13,13]}
+
+test_dir_list = {'Jz': ['../data/Jz_preprocessed'], 
+                 'USFLUX': ['../data/USFLUX_preprocessed'], 
+                 'LOS': ['../data/LOS_preprocessed'], 
+                 'USJH': ['../data/USJH_preprocessed'],
+                 'TOTPOT': ['../data/TOTPOT_preprocessed']}
+
 extensions_list = {'Jz': ['.jz.fits'], 'USFLUX': ['.usflux.fits'], 'LOS': ['.magnetogram.fits'], 'USJH': ['.USJH.fits'], 'TOTPOT': ['.TOTPOT.fits']}
 class_weights_all = {'Set1': torch.FloatTensor([0.0323,0.9677]),
                      'Set2': torch.FloatTensor([0.0307,0.9693]),
@@ -47,7 +50,7 @@ for Set in range(1,6):
       print('=================== Save name: ', sav_nm)
       num = all_models[sav_nm][Set - 1]
       print('Model number = ', num)
-      model = torch.load('/home/nitk233sp001/BestModels_Redone/Set' + str(Set) + '/ResNet18_' + sav_nm + '_' + str(num) + '.pt', map_location=torch.device(device), weights_only=False)
+      model = torch.load('../Outputs/' + sav_nm + '/Set' + str(Set) + '/Model/ResNet18_' + sav_nm + '_' + str(num) + '.pt', map_location=torch.device(device), weights_only=False)
       test_dir = test_dir_list[sav_nm]
       extensions = extensions_list[sav_nm]
    
@@ -63,5 +66,5 @@ for Set in range(1,6):
    df_final['Fold'] = df_lab['Fold']
    df_final['Label'] = df_lab['Label']
    print(df_final)
-   df_final.to_csv('/home/nitk233sp001/Ensemble/csv_inps/Set' + str(Set) + '_1chPredEnsemble.csv', header = True, index = False)
+   df_final.to_csv('csv_inps/Set' + str(Set) + '_1chPredEnsemble.csv', header = True, index = False)
 
