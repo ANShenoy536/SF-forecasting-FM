@@ -4,8 +4,8 @@ from sklearn.metrics import confusion_matrix, roc_curve, roc_auc_score
 import matplotlib.pyplot as plt
 import torch
 
-df_flare = pd.read_csv('/home/nitk233sp001/Ensemble/csv_inps/1chPredEnsemble.csv')
-df_noflare = pd.read_csv('/home/nitk233sp001/Ensemble/csv_inps/1chPredEnsemble_noflare.csv')
+df_flare = pd.read_csv('csv_inps/1chPredEnsemble_Flare.csv')
+df_noflare = pd.read_csv('csv_inps/1chPredEnsemble_NoFlare.csv')
 
 labels = df_flare['Label'].values
 
@@ -34,4 +34,3 @@ print('Precision: ', prec)
 print('Recall: ', rec)
 print('F1-score: ', f1)
 print('TSS: ', tss)
-
