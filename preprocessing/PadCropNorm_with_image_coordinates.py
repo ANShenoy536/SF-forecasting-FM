@@ -30,9 +30,7 @@ def padding(img, axis, fin_dim):
         pad_img = np.zeros((img.shape[0], fin_dim))
     x, y = pad_img.shape    
     
-    pad_img[(x - img.shape[0])//2: (x + img.shape[0])//2, (y - img.shape[1])//2:(y + img.shape[1])//2] = img 
-    #:img.shape[0], :img.shape[1]] = img
-    
+    pad_img[(x - img.shape[0])//2: (x + img.shape[0])//2, (y - img.shape[1])//2:(y + img.shape[1])//2] = img     
     return pad_img
 
 
@@ -49,7 +47,6 @@ def cropping(img, axis, cent_cord, fin_dim = 896):
     elif (1-axis)*(cent_cord + val >img.shape[0]): #if the cropped image would exceed the y-length of the image
         #print('case3')
         cent_cord = img.shape[0] - val
-        #print(cent_cord)
         
     #print('cent_cord: ', cent_cord)
     if axis == 1:
@@ -90,8 +87,10 @@ def log_normalize(img, max_val, min_val): # For TOTPOT
     return p_img + n_img
 
 def get_updated_crval(header, cent_cord, axis):
-    # Note that longitude= CRVAL1 is the x axis and latitude=CRVAL2 is the y axis
-    # Also note that this function calculates the cval i.t.o the 896x896 image with cdelt=0.3
+    """
+    Note that longitude= CRVAL1 is the x axis and latitude=CRVAL2 is the y axis
+    Also note that this function calculates the cval i.t.o the 896x896 image with cdelt=0.3
+    """
     if axis == 0: # y axis; latitude
         crval = header['CRVAL2'] + (cent_cord + 0.5 - header['CRPIX2'])*header['CDELT2'] # +0.5 because +1 to match sharp cord. -0.5 to get to patch center
     if axis == 1: # x axis; longitude
@@ -177,9 +176,7 @@ def save_img_fits(img, dest_dir, fl_name, header, case, cent_cord_x = None, cent
     hdul.writeto(os.path.join(dest_dir, fl_name), overwrite = True)
 
 
-######################################
-# Loading the paths to the directories and the Bitmaps_centroid.csv file
-######################################
+# --- Loading the paths to the directories and the Bitmaps_centroid.csv file ---
 
 # FM-wise file extensions
 all_exts = {'Bp': '.Bp.fits', 'Br': '.Br.fits', 'Bt': '.Bt.fits', 'Jz': '.jz.fits', 'USJH': '.USJH.fits',
@@ -267,7 +264,3 @@ for i in tqdm(range(len(df))):
     
 print('count = ', count)
 print('Finished!')
-
-
-
-
