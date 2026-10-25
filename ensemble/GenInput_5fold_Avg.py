@@ -1,5 +1,9 @@
 """
-This program gets the predictions of all the folds for all the models into a single file
+This script takes the test logits for each fold from the best model for that fold. It does this for all the 5 individula FMs and
+stores it in a single csv file. 
+It stores the logit('Flare') if cls = 'Flare', and logit(NoFlare) if cls = 'NoFlare'.
+
+Please Note that while the output csvs say P(Flare)/P(NoFlare) they actually mean logit(Flare)/logit(NoFlare).
 """
 import pandas as pd
 import numpy as np
@@ -38,7 +42,6 @@ batch_size = 32
 df_final = pd.DataFrame()
 for sav_nm in all_models:
    print('========================== Save name: ', sav_nm)
-   #print(f'Models in {sav_nm}: {models[sav_nm]}')
    df_all = pd.DataFrame()
    arr = np.array([])
    fold = np.array([])
