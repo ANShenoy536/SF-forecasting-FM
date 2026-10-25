@@ -19,4 +19,5 @@ python SF_Ensemble.py Set num epochs learning_rate
 - `epochs`: int : is number of epochs to train the model
 - `learning_rate`: float : is the learning rate
 
-## Note that these P(Flare) and P(NoFlare) values are actually, Logit(Flare) and Logit(NoFlare)
+[!Note]
+Note that these P(Flare) and P(NoFlare) values are actually, Logit(Flare) and Logit(NoFlare)
