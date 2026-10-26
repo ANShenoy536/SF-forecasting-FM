@@ -1,5 +1,7 @@
 # SF-forecasting-FM 
 Forecasting solar flares using the spatial distributions or field maps of different properties.  
+This repository is accompanied by the publication:
+> [Solar Flare Forecasting Using the Spatial Distributions of Active Region Properties](https://link.springer.com/article/10.1007/s11207-026-02751-w)
 ## Summary
 |sav_nm|Model name|Inputs|
 | --- | --- | --- |
@@ -60,6 +62,19 @@ python eval/evaluate_5foldCV_results.py <res_path>
 ## Inference
 
 ## Links
+If you are using this work please cite 
+
+@article{shenoy2026solar,
+  title={Solar Flare Forecasting Using the Spatial Distributions of Active Region Properties},
+  author={Shenoy, Ashwini Nagaraj and HN, Adithya and Vijayasenan, Deepu and Padinhatteeri, Sreejith and Raghavendra, BS},
+  journal={Solar Physics},
+  volume={301},
+  number={10},
+  pages={161},
+  year={2026},
+  doi={https://doi.org/10.1007/s11207-026-02751-w}
+  publisher={Springer}
+}
 
 
 
