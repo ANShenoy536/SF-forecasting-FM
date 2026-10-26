@@ -64,6 +64,7 @@ python eval/evaluate_5foldCV_results.py <res_path>
 ## Links
 If you are using this work please cite 
 
+```
 @article{shenoy2026solar,
   title={Solar Flare Forecasting Using the Spatial Distributions of Active Region Properties},
   author={Shenoy, Ashwini Nagaraj and HN, Adithya and Vijayasenan, Deepu and Padinhatteeri, Sreejith and Raghavendra, BS},
@@ -75,6 +76,7 @@ If you are using this work please cite
   doi={https://doi.org/10.1007/s11207-026-02751-w}
   publisher={Springer}
 }
+```
 
 
 
