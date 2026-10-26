@@ -1,7 +1,7 @@
 # SF-forecasting-FM 
 Forecasting solar flares using the spatial distributions or field maps of different properties.  
 This repository is accompanied by the publication:
-> [Solar Flare Forecasting Using the Spatial Distributions of Active Region Properties](https://link.springer.com/article/10.1007/s11207-026-02751-w)
+> [Shenoy, A.N., H.N., A., Vijayasenan, D. et al. Solar Flare Forecasting Using the Spatial Distributions of Active Region Properties. Sol Phys 301, 161 (2026).](https://link.springer.com/article/10.1007/s11207-026-02751-w)
 ## Summary
 |sav_nm|Model name|Inputs|
 | --- | --- | --- |
